@@ -8,7 +8,7 @@ from sklearn import preprocessing
 from sklearn.cross_validation import cross_val_score
 from sklearn.cross_validation import train_test_split
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
-from sklearn.ensemble import ExtraTreesClassifier
+from sklearn.ensemble import ExtraTreesClassifier, ExtraTreesRegressor
 from sklearn import metrics
 
 global labelEncoders
@@ -145,7 +145,7 @@ def main():
 
     #tune(X,y)
 
-    clf = RandomForestRegressor(n_estimators=2000)
+    clf = ExtraTreesRegressor(n_estimators=2000)
 
     clf.fit(X,y)
 
@@ -165,7 +165,7 @@ def main():
 
     pred = clf.predict(X_test)
 
-    with open('subrf.csv','wb') as f:
+    with open('subextra.csv','wb') as f:
         writer = csv.writer(f)
         writer.writerow(['"UserID"','"Probability1"'])
         for u, p in zip(userIds, pred):
