@@ -2,6 +2,7 @@
 # David Wihl
 
 import csv
+import pickle
 import numpy as np
 from sklearn import preprocessing
 from sklearn.cross_validation import cross_val_score
@@ -15,6 +16,12 @@ global labelEncoders
 class Dataset(object):
     def __init__(self):
         self.labelEncoders = []
+
+    def load(self):
+        self.labelEncoders = pickle.load( open("encoders.p", "rb") )
+
+    def save(self):
+        pickle.dump(self.labelEncoders, open("encoders.p", "wb") )
 
     def trainProcess(self,headers, array):
         newRow = [0] * len(headers)
@@ -112,23 +119,36 @@ def main():
     nrow = 0
     ds = Dataset()
     print "reading and processing..."
-    with open('train.csv', 'rU') as csvfile:
-        reader = csv.reader(csvfile, lineterminator='\r')
-        headers = reader.next()
-        trainData = []
-        for row in reader:
-            trainData.append(row)
-        X_array, target = ds.trainProcess(headers,trainData)
+    try:
+        X = np.load("X.npy")
+        y = np.load("y.npy")
+        ds.load()
+    except:
+        print "exception thrown"
+        with open('train.csv', 'rU') as csvfile:
+            reader = csv.reader(csvfile, lineterminator='\r')
+            headers = reader.next()
+            trainData = []
+            for row in reader:
+                trainData.append(row)
+            X_array, target = ds.trainProcess(headers,trainData)
+
+
+        X = np.array(X_array)
+        y = np.array(target)
+        np.save("X.npy",X)
+        np.save("y.npy",y)
+        ds.save()
 
     print "starting train..."
-    X = np.array(X_array)
-    y = np.array(target)
     print "X shape", X.shape
 
     #tune(X,y)
 
-    clf = RandomForestRegressor(n_estimators=10, max_depth=None,min_samples_split=1, random_state=0)
-
+    clf = RandomForestClassifier(n_estimators=2000)
+    scores = cross_val_score(clf,X,y)
+    print scores.mean()
+    return
 
     print "starting predictions..."
 
