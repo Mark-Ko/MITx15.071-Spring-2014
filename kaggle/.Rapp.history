@@ -1,0 +1,251 @@
+parole=read.csv("parole.csv")
+parole$male = as.factor(parole$male)
+parole$state = as.factor(parole$state)
+parole$crime = as.factor(parole$crime)
+table(parole$male)
+130 / (130+545)
+130/545
+str(parole)
+summary(parole)
+130_545
+130 + 545
+130/675
+table(parole$male, parole$violater)
+table(parole$male, parole$violator)
+k = subset(parole, state ==2)
+str(k)
+table(k$crime)
+ggplot(data = parole, aes(x = age)) + geom_histogram()
+ggplot(data = parole, aes(x = age)) + geom_histogram(binwidth=5)
+ggplot(data = parole, aes(x = age)) + geom_histogram(binwidth=5, color="blue")
+ggplot(data = parole, aes(x = age)) + geom_histogram(binwidth = 5) + facet_grid(male ~ .)
+ggplot(data = parole, aes(x = age)) + geom_histogram(binwidth = 5) + facet_grid(. ~ male)
+ggplot(data = parole, aes(x = age, fill = male)) + geom_histogram(binwidth = 5)
+ggplot(data = parole, aes(x = age, fill = male)) + geom_histogram(binwidth = 5, position="identity", alpha=0.5)
+ggplot(data = parole, aes(x = age, fill = male)) + geom_histogram(binwidth = 5)
+ggplot(data = parole, aes(x = age, fill = male)) + geom_histogram(binwidth = 5, position="identity", alpha=0.5)
+ggplot(data = parole, aes(x = age, fill = male)) + geom_histogram(binwidth = 5)
+ggplot(data = parole, aes(x = age, fill = male)) + geom_histogram(binwidth = 5, position="identity", alpha=0.5)
+ggplot(data = parole, aes(x = time.served)) + geom_histogram(binwidth=1)
+ggplot(data = parole, aes(x = time.served)) + geom_histogram(binwidth=0.1)
+ggplot(data = parole, aes(x = time.served)) + geom_histogram(binwidth=0.1)
+ggplot(data = parole, aes(x = time.served)) + geom_histogram(binwidth=1) + facet_grid(crime ~ .)
+ggplot(data = parole, aes(x = time.served, fill=crime)) + geom_histogram(binwidth=1, position="identity")
+ggplot(data = parole, aes(x = time.served, fill=crime)) + geom_histogram(binwidth=1, position="identity", alpha=0.5)
+rm(list=ls())
+edges = read.csv("edges.csv")
+users = read.csv("users.csv")
+str(users)
+str(edges)
+146/59
+table(edges)
+str(users)
+str(edges)
+146/59
+146/59 /2
+table(users$locale)
+table(users$locale, users$school)
+table(users$gender, users$school)
+table(users$gender)
+table(users$school)
+install.package("igraph")
+install.packages("igraph")
+library(igraph)
+install.packages("igraph")
+chooseCRANmirror(graphics = getOption("menu.graphics"), ind = NULL)
+install.packages("igraph")
+library(igraph)
+?graph.data.frame
+g = graph.data.frame(edges, FALSE, users)
+g = graph.data.frame(users, FALSE, edges)
+g = graph.data.frame(users, TRUE, edges)
+g = graph.data.frame(edges, TRUE, users)
+?graph.data.frame
+g = graph.data.frame(edges, FALSE, users)
+plot(g, vertex.size=5, vertex.label=NA)
+degree(g)
+sort(degree(g))
+V(g)$size=degree(g)/2+2
+plot(g, vertex.label=NA)
+table(V(g)$size)
+str(V(g))
+V(g)$color="black"
+V(g)$color[V(g)$gender == "A"] = "red"
+V(g)$color[V(g)$gender == "B"] = "gray"
+plot(g, vertex.label=NA)
+str(g)
+str(users)
+V(g)$color[V(g)$gender == "A"] = "blue"
+V(g)$color[V(g)$school == "A"] = "blue"
+V(g)$color[V(g)$school == "AB"] = "yellow"
+V(g)$color[V(g)$school == "B"] = "green"
+plot(g, vertex.label=NA)
+V(g)$color[V(g)$locale == "A"] = "red"
+V(g)$color[V(g)$locale == "B"] = "gray"
+plot(g, vertex.label=NA)
+?graph.plotting
+?igraph.plotting
+rglplot(g)
+?igraph.plotting
+plot(g, vertex.label=NA, edge.width=5)
+plot.rglplot(g)
+install.packages("rglplot")
+install.packages("rgl")
+library(rgl)
+rglplot(g)
+rglplot
+rm(list=ls())
+library(tm)
+library(SnowballC)
+tweets = read.csv("tweets.csv", stringsAsFactors=FALSE)
+tweets = tm_map(tweets, tolower)
+str(tweets)
+corpus = Corpus(VectorSource(tweets$Tweet))
+corpus = tm_map(corpus,lower)
+corpus
+corpus = tm_map(corpus, removePunctuation)
+corpus = tm_map(corpus,removeWords,c(stopwords("english")))
+corpus = tm_map(corpus,stemDocument)
+frequencies = DocumentTermMatrix(corpus)
+allTweets = as.data.frame(as.matrix(corpus))
+str(allTweets)
+allTweets = as.data.frame(as.matrix(frequencies))
+ls()
+frequencies = DocumentTermMatrix(corpus)
+corpus
+corpus = tm_map(corpus, stemDocument)
+corpus
+frequencies=DocumentTermMatrix(corpus)
+frequencies
+corpus
+rm(list=ls())
+tweets = read.csv("tweets.csv", stringsAsFactors=FALSE)
+corpus = Corpus(VectorSource(tweets$Tweet))
+corpus[[1]]
+str(tweets)
+corpus = tm_map(corpus,tolower)
+corpus = tm_map(corpus,removePunctuation)
+corpus = tm_map(corpus,removeWords, stopwords("english"))
+freq = DocumentTermMatrix(corpus)
+allTweets = as.data.frame(freq)
+inspect(freq)
+str(freq)
+allTweets = as.data.frame(as.matrix(freq))
+str(allTweets)
+nrow(allTweets)
+str(freq)
+install.packages("wordcloud")
+library(wordcloud)
+?wordcloud
+ls()
+corpus
+str(corpus)
+ls()
+str(allTweets)
+summary(allTweets)
+colnames(allTweets)
+colSums(allTweets)
+?wordcloud
+w = wordcloud(colnames(allTweets),colSums(allTweets))
+w = wordcloud(colnames(allTweets),colSums(allTweets), scale=c(2,.25))
+corpus = tm_map(corpus, removeWords, c("apple"))
+freq=DocumentTermMatrix(corpus)#
+allTweets = as.data.frame(as.matrix(freq))
+w = wordcloud(colnames(allTweets),colSums(allTweets))
+str(allTweets)
+summary(allTweets)
+str(tweets)
+negTweets = subset(tweets, Avg <= -1.0)
+str(negTweets)
+negcorp = Corpus(VectorSource(negTweets$Tweet))
+negcorp = tm_map(negcorp, tolower)
+negcorp = tm_map(negcorp,removePunctuation)
+negcorp = tm_map(negcorp, removeWords stopword("english"))
+negcorp = tm_map(negcorp, removeWords, stopword("english"))
+negcorp
+negcorp = tm_map(negcorp, removeWords, stopwords("english"))
+negcorp
+negcorp = Corpus(VectorSource(negTweets$Tweet))
+negcorp = tm_map(negcorp, tolower)
+negcorp = tm_map(negcorp,removePunctuation)
+negcorp = tm_map(negcorp, removeWords, stopwords("english"))
+negcorp = tm_map(negcorp, removeWords, c("apple"))
+negFreq = DocumentTermMatix(negcorp)
+negFreq = DocumentTermMatrix(negcorp)
+negTweets = as.data.frame(as.matrix(negFreq))
+wordcloud(colnames(negTweets), colSums(negTweets))
+w = wordcloud(colnames(allTweets),colSums(allTweets),random.order=FALSE)
+w = wordcloud(colnames(allTweets),colSums(allTweets),rot.per=0.1)
+w = wordcloud(colnames(allTweets),colSums(allTweets),rot.per=0.5)
+w = wordcloud(colnames(allTweets),colSums(allTweets),ordered.colors=TRUE)
+install.packages("RColorBrewer")
+library(RColorBrewer)
+display.brewer.all()
+brewer.pal(9,"Blues")[c(5,6,7,8,9)]
+brewer.pal(9,"Blues")[c(-5,-6,-7,-8,-9)]
+brewer.pal(9,"Blues")[c(-1,-2,-3,-4)]
+rm(list=ls())
+happy=read.csv("train.csv")
+library(caTools)
+spl=sample.split(happy$Happy, SplitRatio=0.7)
+train = subset(happy,spl==TRUE)
+test = subset(happy,spl==FALSE)
+library(randomForest)
+str(train)
+hForest = randomForest(Happy ~ ., data=train,nodesize=25,ntree=200)
+predictForest = predict(hForest,newdata=test)
+ls()
+summary(happy)
+train$YOB=NULL
+test$YOB=NULL
+hForest = randomForest(Happy ~ ., data=train,nodesize=25,ntree=200)
+predictForest = predict(hForest, newdata=test)
+predictForest = predict(hForest, newdata=test, type="prob")[,2]
+predictForest = predict(hForest, newdata=test)[,2]
+predictForest = predict(hForest, newdata=test)
+predictForest
+library(ROCR)
+ROCRpred = prediction(predictForest, test$Happy)
+as.numeric(performance(ROCRpred,"auc")@y.values)
+hForest = randomForest(Happy ~ ., data = happy,nodesize=25,ntree=200)
+happy$YOB=NULL
+hForest = randomForest(Happy ~ ., data = happy,nodesize=25,ntree=200)
+test = read.csv("test.csv")
+predictForest = predict(hForest, newdata=test)
+predictForest
+submission = data.frame(UserID = test$UserID, Probability1=predictForest)
+write.csv(submission, "submission.csv", row.names=FALSE)
+library(e1071)
+library(rpart)
+svm.model = svm(Happy ~ ., data=happy, cost=100, gamma=1)
+svm.pred = predict(svm.model, test)
+svm.pred
+svm.model = svm(Happy ~ ., data=happy, cost=100, gamma=1000)
+svm.model = svm(Happy ~ ., data=happy, cost=1000, gamma = 0.0001)
+svm.pred = predict(svm.model, test)
+svm.pred
+submission = data.frame(UserID = test$UserID, Probability1 = svm.pred)
+str(svm.pred)
+str(test)
+nrow(test)
+?svm
+summary(happy)
+test$YOB=NULL
+svm.pred = predict(svm.model, test)
+nrow(svm.pred
+)
+svm.pred
+submission = data.frame(UserID = test$UserID, Probability1 = svm.pred)
+write.csv(submission, "submission_svm.csv", row.names=FALSE)
+ttrain = subset(happy, spl==TRUE)
+ttest = subset(happy, spl==FALSE)
+svm.model = svm(Happy ~ ., data=ttrain, cost=1000, gamma = 0.0001)
+svm.pred = predict(svm.model, ttest)
+ROCRpred = prediction(svm.pred, ttest$Happy)
+as.numeric(performance(ROCRpred,"auc")@y.values)
+svm.pred[svm.pred>1.00] = 0.99
+svm.pred[svm.pred<0.00] = 0.001
+svm.pred
+ROCRpred = prediction(svm.pred, test$Happy)
+ROCRpred = prediction(svm.pred, ttest$Happy)
+as.numeric(performance(ROCRpred,"auc")@y.values)
