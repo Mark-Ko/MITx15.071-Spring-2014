@@ -140,17 +140,16 @@ def main():
         np.save("y.npy",y)
         ds.save()
 
-    print "starting train..."
+    print "Starting train..."
     print "X shape", X.shape
 
     #tune(X,y)
 
-    clf = RandomForestClassifier(n_estimators=2000)
-    scores = cross_val_score(clf,X,y)
-    print scores.mean()
-    return
+    clf = RandomForestRegressor(n_estimators=2000)
 
-    print "starting predictions..."
+    clf.fit(X,y)
+
+    print "Starting predictions..."
 
     nrow = 0
     with open('test.csv', 'rU') as csvfile:
@@ -163,15 +162,16 @@ def main():
 
     X_test = np.array(testArray)
     print "X test shape", X_test.shape
-    pred = clf.predict(X_test)
-    print pred
 
-    return
+    pred = clf.predict(X_test)
+
     with open('subrf.csv','wb') as f:
         writer = csv.writer(f)
+        writer.writerow(['"UserID"','"Probability1"'])
         for u, p in zip(userIds, pred):
-            writer.writerow(u,p)
+            writer.writerow([u,p])
 
+    print "Submission CSV written."
 
 
 if __name__ == "__main__":
