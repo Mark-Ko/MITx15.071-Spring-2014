@@ -5,6 +5,7 @@ import csv
 import pickle
 import numpy as np
 from sklearn import preprocessing
+from sklearn import svm
 from sklearn.cross_validation import cross_val_score
 from sklearn.cross_validation import train_test_split
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
@@ -145,7 +146,10 @@ def main():
 
     #tune(X,y)
 
-    clf = ExtraTreesRegressor(n_estimators=2000)
+    clf = svm.SVR(probability=True)
+    #scores = cross_val_score(clf, X, y, cv = 5)
+    #print scores.mean()
+    #return 
 
     clf.fit(X,y)
 
@@ -167,8 +171,10 @@ def main():
 
     with open('subextra.csv','wb') as f:
         writer = csv.writer(f)
-        writer.writerow(['"UserID"','"Probability1"'])
+        writer.writerow(['UserID','Probability1'])
         for u, p in zip(userIds, pred):
+            if p > 0.99: p = 0.99
+            if p < 0.001: p = 0.001
             writer.writerow([u,p])
 
     print "Submission CSV written."
