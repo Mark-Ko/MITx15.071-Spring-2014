@@ -111,11 +111,6 @@ class Dataset(object):
 
         return userIds, cleanArray
 
-# TODO: 1) output submission, 2) tune params, 3) try other classifier
-def tune(X,y):
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=size)
-
-
 def main():
     nrow = 0
     ds = Dataset()
@@ -144,12 +139,10 @@ def main():
     print "Starting train..."
     print "X shape", X.shape
 
-    #tune(X,y)
-
-    clf = svm.SVR(probability=True)
-    #scores = cross_val_score(clf, X, y, cv = 5)
-    #print scores.mean()
-    #return 
+    clf = RandomForestRegressor(n_estimators=2000)
+    scores = cross_val_score(clf, X, y, cv = 5)
+    print scores.mean()
+    return 
 
     clf.fit(X,y)
 
@@ -182,3 +175,8 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+# todo:
+# 1. add normalization code for YOB and questions answered, then normalize the values
+# 2. Try a two or four cluster then run RF against it.
+# 3. Clean out bad training data
