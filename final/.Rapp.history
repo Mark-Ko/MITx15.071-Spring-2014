@@ -1,0 +1,250 @@
+m
+SSE2 = sum((m - test$ElantraSales)^2)
+SSE2
+m = mean(train$ElantraSales)
+SSE2 = sum((m - test$ElantraSales)^2)
+SSE2
+SST = sum((mean(train$ElantraSales) - test$ElantraSales)^2)
+SST
+mean(test$ElantraSales)
+mean(train$ElantraSales)
+t
+SSE = sum((t - test$ElantraSales)^2)
+SST = sum((mean(train$ElantraSales) - test$ElantraSales)^2)
+1 - SSE/SST
+sort (t-test$ElantraSales)
+table(t-test$ElantraSales, Month)
+table(t-test$ElantraSales, test$Month)
+t
+test
+12.92/15
+rm(list=ls())
+ls()
+articles = read.csv("nytimes.csv",stringsAsFactors = FALSE)
+str(articles)
+table(articles$popular)
+105/(105+868)
+cor(nchar(articles$headline), popular)
+cor(nchar(articles$headline), articles$popular)
+articles$type = as.factor(articles$type)
+articles$popular = as.factor(articles$popular)
+str(articles)
+summary(articles)
+library(caTools)
+set.seed(144)
+spl = sample.split(articles$popular, SplitRatio=0.7)
+train = subset(articles,spl==TRUE)
+test = subset(articles, spl==FALSE)
+model = glm(popular ~ print + type + word.count, data=train, family=binomial)
+summary(model)
+a=head(test,1)
+a
+a$print = 1
+a$type = "News"
+a
+a$type = "fred"
+summary(a)
+summary(test)
+a$type = as.factor("News")
+summary(test)
+summary(a)
+a$word.count=682
+a
+p1 = predict(model, newdata=a,type="response")
+p1
+summary(model)
+p1 = predict(model,newdata=test, type="response")
+table(test$popular,p1>0.5)
+table(train$popular)
+p1 = predict(model, type="response")
+table(train$popular)
+table(train$popular,p1>0.5)
+table(p1>0.5)
+p1 = predict(model,newdata=test, type="response")
+table(p1>0.5)
+table(test$popular)
+library(ROCR)
+ROCRpred=prediction(p1,test$popular)
+as.numeric(performance(ROCRpred,"auc")@y.values)
+predictROC = predict(model,newdata=test)
+pred = prediction(predictROC[,2],test$popular)
+predictROC
+pred = prediction(predictROC[,2],test$popular)
+str(predictROC)
+pred = prediction(predictROC,test$popular)
+perf = performance(pred,"tpr","fpr")
+plot(perf)
+plot(perf, colorize=TRUE)
+library(caret)
+library(e1071)
+fitControl = trainControl(method="cv",number=10)
+cartGrid = expand.grid(.cp=(1:50)*0.01)
+train(popular ~ print + type + word.count, data=train, method="rpart", trControl=fitControl,tuneGrid=cartGrid)
+set.seed(144)
+fitControl = trainControl(method="cv",number=10)
+cartGrid = expand.grid(.cp=(1:50)*0.01)
+train(popular ~ print + type + word.count, data=train, method="rpart", trControl=fitControl,tuneGrid=cartGrid)
+tree= rpart(popular ~ print + type + word.count, method="class",data=train,control=rpart.control(cp=0.18))
+library(rpart.plot)
+prp(tree)
+tree= rpart(popular ~ print + type + word.count, method="class",data=train,control=rpart.control(cp=0.01))
+prp(tree)
+library(rpart)
+tree= rpart(popular ~ print + type + word.count, method="class",data=train,control=rpart.control(cp=0.01))
+prp(tree)
+tree= rpart(popular ~ print + type + word.count, method="rpart",data=train,control=rpart.control(cp=0.01))
+tree= rpart(popular ~ print + type + word.count, method="class",data=train,control=rpart.control(cp=0.01))
+plot(tree)
+library(tm)
+library(SnowballC)
+corpus = Corpus(VectorSource(articles$snippet))
+str(articles)
+corpus = tm_map(corpu,tolower)
+corpus = tm_map(corpus,tolower)
+corpus = tm_map(corpus, removePunctuation)
+corpus = tm_map(corpus, removeWords, stopwords("english"))
+corpus = tm_map(corpus, stemDocument)
+dtm = DocumentTermMatrix(corpus)
+summary(dtm)
+allWords = as.data.frame(as.matrix(dtm))
+summary(allWords)
+ncol(allWords)
+dtm
+spdtm = removeSparseTerms(dtm, 0.95)
+spdtm
+articleText = as.data.frame(as.matrix(spdtm))
+articleText
+colSums(articleText)
+sort(colSums(articleText))
+articleText$print = articles$print
+articleText$type = articles$type
+articleText$word.count = articles$word.count
+articleText$popular = articles$popular
+trainText = subset(articleText, spl==TRUE)
+testText= subset(articleText, spl==FALSE)
+str(testText)
+glmText = glm(popular ~ ., data=trainText, family="binomial")
+summary(glmText)
+glmText
+ROCRpred = prediction(glmText,train$popular)
+summary(glmText)
+ROCRpred = prediction(glmText, train$popular)
+glmText
+p1 = predict(glmText, type="response")
+predROCR = preduction(p1, train$popular)
+predROCR = prediction(p1, train$popular)
+performance(predROCR,"auc")@y.values
+predROCR = prediction(glmText, train$popular)
+p1
+summary(p1)
+str(p1)
+str(trainText)
+predROCR=prediction(p1>0.5, trainText$popular)
+predROCR=prediction(p1, trainText$popular)
+performance(predROCR,"auc")@y.values
+rm(list=ls())
+stocks = read.csv("nasdaq_returns.csv")
+str(stocks)
+summary(stocks)
+summary(stocks$symbol)
+str(stocks$symbol)
+str(stocks$stock_symbol)
+table(stocks$industry)
+sort(table(stocks$industry))
+table(stocks$ret2000.12)
+table(stocks$ret2000.12 < -0.1)
+table(stocks$ret2000.12 > 0.1)
+str(stocks)
+table(stocks$industry, ret2008.10)
+table(stocks$industry, stocks$ret2008.10)
+tapply(stocks$industry, ret2008.10, mean)
+tapply(stocks$industry, stocks$ret2008.10, mean)
+str(stocks)
+table(stocks$industry, stocks$ret2008.10)
+colSums(table(stocks$industry, stocks$ret2008.10))
+mean(table(stocks$industry, stocks$ret2008.10))
+aggregate(stocks$ret2008.10, by=list(stocks$industry), FUN=mean)
+sort(aggregate(stocks$ret2008.10, by=list(stocks$industry), FUN=mean))
+sort(aggregate(stocks$ret2008.10, by=list(stocks$industry), FUN=mean))
+aggregate(stocks$ret2008.10, by=list(stocks$industry), FUN=mean)
+aggregate(stocks$ret2000.02, by=list(stocks$industry), FUN=mean)
+tapply(stocks$industry, stocks$ret2000.02, mean)
+tapply(stocks$ret2000.02, stocks$industry, mean)
+limited = stocks
+limited$stock_symbol = NULL
+limited$industry = NULL
+limited$subindustry = NULL
+str(limited)
+str(stocks)
+str(limited)
+summary(limited)
+mean(limited)
+summary(limited)
+table(mean(stocks))
+colMeans(limited)
+sort(colMeans(limited))
+d = dist(limited,method="euclidean")
+clusterStocks = hclust(d,method="ward")
+plot(clusterStocks)
+clusterGroups = cutree(clusterStocks, k = 5)
+tapply(stocks$industry, clusterGroups, count)
+tapply(stocks$industry, clusterGroups, sum)
+tapply(stocks$industry, clusterGroups, function(x) length(unique(x))
+)
+stocks$industry
+tapply(stocks$industry, clusterGroups, function(x) length(unique(x)))
+stocks$industry[3]
+table(clusterGroups)
+clusterGroups[1]
+clusterGroups[45]
+str(clusterGroups)
+table(stocks$industry, clusterGroups)
+55+35+34+6
+table(stocks$subindustry, clusterGroups)
+table(stocks$ret2000.02, clusterGroups)
+table(stocks$ret2000.03, clusterGroups)
+mean(table(stocks$ret2000.03, clusterGroups))
+colMean(table(stocks$ret2000.03, clusterGroups))
+colMeans(table(stocks$ret2000.03, clusterGroups))
+colMeans(table(stocks$ret2005.05, clusterGroups))
+colMeans(table(stocks$ret2009.10, clusterGroups))
+colMeans(table(stocks$ret2009.12, clusterGroups))
+k=5
+set.seed(144)
+KMC=kmeans(limited, centers=k)
+str(KMC)
+table(KMC, clusterGroups)
+table(KMC$cluster, clusterGroups)
+stocks$stock_symbol == "AAPL"
+stocks[2]
+head(stocks[2])
+head(stocks,2)
+head(KMC$cluster,2)
+head(clusterGroups,2)
+which
+which(stocks$stock_symbol == "AMZN")
+KMC[row(62)]
+KMC[62]
+KMC[62,]
+KMC[1]
+KMC[1,62]
+KMC[1]
+KMC[c(2)]
+KMC$clusters[c(2)]
+KMC$clusters[2)
+KMC$clusters[2]
+KMC$cluster[2]
+KMC$cluster[62]
+which(stocks$stock_symbol=="AAPL")
+which(stocks$stock_symbol=="AMZN")
+which(stocks$stock_symbol=="MSFT")
+which(stocks$stock_symbol=="TROW")
+clusterGroups[2]
+clusterGroups[62]
+clusterGroups[673]
+clusterGroups[1048]
+KMC$cluster[2]
+KMC$cluster[62]
+KMC$cluster[673]
+KMC$cluster[1048]
+63/75
